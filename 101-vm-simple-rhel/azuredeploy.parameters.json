@@ -1,0 +1,15 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "rtlinux"
+    },
+    "adminPassword": {
+      "value": "S4mpl3.P4$$word"
+    },
+    "vmName": {
+      "value": "rhelsamplescript01"
+    }
+  }
+}

@@ -6,10 +6,10 @@
       "value": "csauser"
     },
     "adminPassword": {
-      "value": "GEN-PASSWORD"
+      "value": "S4mpl3.P4$$word"
     },
     "dnsNamePrefix": {
-      "value": "GEN-UNIQUE"
+      "value": "csartlinux01"
     }
   }
 }
