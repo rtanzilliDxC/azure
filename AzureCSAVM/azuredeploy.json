@@ -31,20 +31,25 @@
       "type": "String"
     },
     "storageAccounts_CSAD_name": {
-      "defaultValue": "dxccsarg01disks848",
+      "defaultValue": "dxccsarg01disks950",
       "type": "String"
     },
     "storageAccounts_CSAO_name": {
       "defaultValue": "dxccsatestsa01",
       "type": "String"
+    },
+    "Subnet_CSA_name": {
+      "defaultValue": "dxccsasn01",
+      "type": "String"
     }
   },
-  "variables": {},
+  "variables": {
+  },
   "resources": [
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Compute/virtualMachines/dxcu16csatest01'.",
+      "comments": "CSA Deploy - VM section",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[parameters('virtualMachines_CSAD_name')]",
+      "name": "[parameters('virtualMachines_CSA_name')]",
       "apiVersion": "2016-04-30-preview",
       "location": "westeurope",
       "properties": {
@@ -63,7 +68,7 @@
             "name": "[parameters('virtualMachines_CSA_name')]",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('https', '://', parameters('storageAccounts_CSA_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_CSA_name'),'20170327175306.vhd'))]"
+              "uri": "[concat('https', '://', parameters('storageAccounts_CSAD_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_CSA_name'),toLower(parameters('virtualMachines_CSA_name')), 'main.vhd'))]"
             },
             "caching": "ReadWrite"
           },
@@ -98,7 +103,7 @@
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/networkInterfaces/dxcu16csatest01431'.",
+      "comments": "CSA Deploy - Network Section",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('networkInterfaces_CSA_name')]",
       "apiVersion": "2016-03-30",
@@ -114,7 +119,7 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_CSA_ip_name'))]"
               },
               "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_CSA_name')), '/subnets/dxcCSAtestSB01')]"
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_CSA_name')), '/subnets/', parameters('virtualNetworks_CSA_name'), parameters('SubNet_CSA_name'))]"
               }
             }
           }
@@ -134,7 +139,7 @@
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/networkSecurityGroups/dxcu16csatest01-nsg'.",
+      "comments": "CSA Deploy - Network Security Groups section",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[parameters('networkSecurityGroups_CSA_nsg_name')]",
       "apiVersion": "2016-03-30",
@@ -172,7 +177,7 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/publicIPAddresses/dxcu16csatest01-ip'.",
+      "comments": "CSA Deploy - Public IP Address section",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddresses_CSA_ip_name')]",
       "apiVersion": "2016-03-30",
@@ -184,7 +189,7 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/virtualNetworks/dxcCSAtest'.",
+      "comments": "CSA Deploy - VNET section",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('virtualNetworks_CSA_name')]",
       "apiVersion": "2016-03-30",
@@ -197,7 +202,7 @@
         },
         "subnets": [
           {
-            "name": "[concat(parameters('virtualNetworks_CSA_name'),'SB01')]",
+            "name": "[concat(parameters('virtualNetworks_CSA_name'),parameters('SubNet_CSA_name'))]",
             "properties": {
               "addressPrefix": "10.1.0.0/27"
             }
@@ -207,7 +212,7 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxccsarg01/providers/Microsoft.Storage/storageAccounts/dxccsarg01disks848'.",
+      "comments": "CSA Deploy - Storage Accounts section/1",
       "type": "Microsoft.Storage/storageAccounts",
       "sku": {
         "name": "Premium_LRS",
@@ -222,7 +227,7 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxccsarg01/providers/Microsoft.Storage/storageAccounts/dxccsatestsa01'.",
+      "comments": "CSA Deploy - Storage Accounts section/2",
       "type": "Microsoft.Storage/storageAccounts",
       "sku": {
         "name": "Standard_LRS",
@@ -238,11 +243,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'),'/newuserscript')]",
-      "apiVersion": "[variables('apiVersion')]",
+      "name": "[concat(parameters('virtualMachines_CSA_name'),'/newuserscript')]",
+      "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachines_CSA_name'))]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Extensions",

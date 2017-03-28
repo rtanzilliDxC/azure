@@ -9,25 +9,28 @@
       "value": "S4mpl3.P4$$word"
     },
     "virtualMachines_CSA_name": {
-      "value": "dxcu16csatest01"
+      "value": "dxcu16dckrcsa01"
     },
     "networkInterfaces_CSA_name": {
-      "value": "dxcu16csatest01431"
+      "value": "dxccsanic01"
     },
     "networkSecurityGroups_CSA_nsg_name": {
-      "value": "dxcu16csatest01-nsg"
+      "value": "dxccsansg01"
     },
     "publicIPAddresses_CSA_ip_name": {
-      "value": "dxcu16csatest01-ip"
+      "value": "dxccsaipaddr01-ip"
     },
     "virtualNetworks_CSA_name": {
-      "value": "dxcCSAtest"
+      "value": "dxcCSAVN01"
     },
     "storageAccounts_CSAD_name": {
-      "value": "dxccsarg01disks848"
+      "value": "dxccsasa01d900"
     },
     "storageAccounts_CSAO_name": {
-      "value": "dxccsatestsa01"
+      "value": "dxccsasao01"
+    },
+    "Subnet_CSA_name": {
+      "value": "dxccsasn01"
     }
   }
 }
