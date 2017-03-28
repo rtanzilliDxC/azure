@@ -256,7 +256,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://github.com/rtanzilliDxC/azure/blob/master/AzureCSAVM/install_dckrCSA.sh"
+            "https://raw.githubusercontent.com/rtanzilliDxC/azure/master/AzureCSAVM/install_dckrCSA.sh"
           ],
           "commandToExecute": "sudo bash install_dckrCSA.sh"
         }
