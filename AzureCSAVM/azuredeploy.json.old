@@ -192,7 +192,7 @@
           "fileUris": [
             "https://github.com/rtanzilliDxC/azure/blob/master/AzureCSAVM/install_dckrCSA.sh"
           ],
-          "commandToExecute": "bash install_dckrCSA.sh"
+          "commandToExecute": "sudo bash install_dckrCSA.sh"
         }
       }
     }

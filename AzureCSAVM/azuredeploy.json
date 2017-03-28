@@ -1,0 +1,252 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachines_CSA_name": {
+      "defaultValue": "dxcu16csatest01",
+      "type": "String"
+    },
+    "networkInterfaces_CSA_name": {
+      "defaultValue": "dxcu16csatest01431",
+      "type": "String"
+    },
+    "networkSecurityGroups_CSA_nsg_name": {
+      "defaultValue": "dxcu16csatest01-nsg",
+      "type": "String"
+    },
+    "publicIPAddresses_CSA_ip_name": {
+      "defaultValue": "dxcu16csatest01-ip",
+      "type": "String"
+    },
+    "virtualNetworks_CSA_name": {
+      "defaultValue": "dxcCSAtest",
+      "type": "String"
+    },
+    "storageAccounts_CSAD_name": {
+      "defaultValue": "dxccsarg01disks848",
+      "type": "String"
+    },
+    "storageAccounts_CSAO_name": {
+      "defaultValue": "dxccsatestsa01",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Compute/virtualMachines/dxcu16csatest01'.",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('virtualMachines_CSAD_name')]",
+      "apiVersion": "2016-04-30-preview",
+      "location": "westeurope",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_DS2_v2"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "16.04-LTS",
+            "version": "latest"
+          },
+          "osDisk": {
+            "osType": "Linux",
+            "name": "[parameters('virtualMachines_CSA_name')]",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('https', '://', parameters('storageAccounts_CSA_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_CSA_name'),'20170327175306.vhd'))]"
+            },
+            "caching": "ReadWrite"
+          },
+          "dataDisks": []
+        },
+        "osProfile": {
+          "computerName": "[parameters('virtualMachines_CSA_name')]",
+          "adminUsername": "docker",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": false
+          },
+          "secrets": []
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_CSA_name'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "https://mypersonalrsdiag285.blob.core.windows.net/"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_CSAD_name'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_CSA_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/networkInterfaces/dxcu16csatest01431'.",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('networkInterfaces_CSA_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "10.1.0.4",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_CSA_ip_name'))]"
+              },
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_CSA_name')), '/subnets/dxcCSAtestSB01')]"
+              }
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": []
+        },
+        "enableIPForwarding": false,
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_CSA_nsg_name'))]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_CSA_ip_name'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_CSA_name'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_CSA_nsg_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/networkSecurityGroups/dxcu16csatest01-nsg'.",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('networkSecurityGroups_CSA_nsg_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-ssh",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "RDP",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1010,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/publicIPAddresses/dxcu16csatest01-ip'.",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[parameters('publicIPAddresses_CSA_ip_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "idleTimeoutInMinutes": 4
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxcCSARG01/providers/Microsoft.Network/virtualNetworks/dxcCSAtest'.",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('virtualNetworks_CSA_name')]",
+      "apiVersion": "2016-03-30",
+      "location": "westeurope",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.1.0.0/24"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[concat(parameters('virtualNetworks_CSA_name'),'SB01')]",
+            "properties": {
+              "addressPrefix": "10.1.0.0/27"
+            }
+          }
+        ]
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxccsarg01/providers/Microsoft.Storage/storageAccounts/dxccsarg01disks848'.",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Premium_LRS",
+        "tier": "Premium"
+      },
+      "kind": "Storage",
+      "name": "[parameters('storageAccounts_CSAD_name')]",
+      "apiVersion": "2016-01-01",
+      "location": "westeurope",
+      "tags": {},
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/4e92696b-bf3a-4aee-b4fe-db3d360381c7/resourceGroups/dxccsarg01/providers/Microsoft.Storage/storageAccounts/dxccsatestsa01'.",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "Storage",
+      "name": "[parameters('storageAccounts_CSAO_name')]",
+      "apiVersion": "2016-01-01",
+      "location": "westeurope",
+      "tags": {},
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'),'/newuserscript')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "https://github.com/rtanzilliDxC/azure/blob/master/AzureCSAVM/install_dckrCSA.sh"
+          ],
+          "commandToExecute": "sudo bash install_dckrCSA.sh"
+        }
+      }
+    }
+  ]
+}
