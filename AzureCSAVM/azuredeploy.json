@@ -2,6 +2,14 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminuser_CSA_name": {
+      "defaultValue": "linuxuser",
+      "type": "String"
+    },
+    "adminPassword_CSA_name": {
+      "defaultValue": "A.z.U.r.3.S.3.C.u.r.3",
+      "type": "String"
+    },
     "virtualMachines_CSA_name": {
       "defaultValue": "dxcu16csatest01",
       "type": "String"
@@ -63,7 +71,8 @@
         },
         "osProfile": {
           "computerName": "[parameters('virtualMachines_CSA_name')]",
-          "adminUsername": "docker",
+          "adminUsername": "[parameters('adminuser_CSA_name')]",
+          "adminPassword": "[parameters('adminPassword_CSA_name')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": false
           },
