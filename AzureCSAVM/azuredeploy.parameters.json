@@ -2,14 +2,11 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-05-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
+    "adminuser_CSA_name": {
       "value": "csauser"
     },
-    "adminPassword": {
+    "adminPassword_CSA_name": {
       "value": "S4mpl3.P4$$word"
-    },
-    "dnsNamePrefix": {
-      "value": "csartlinux01"
     },
     "virtualMachines_CSA_name": {
       "value": "dxcu16csatest01"
