@@ -12,25 +12,25 @@
       "value": "csartlinux01"
     },
     "virtualMachines_CSA_name": {
-      "defaultValue": "dxcu16csatest01"
+      "value": "dxcu16csatest01"
     },
     "networkInterfaces_CSA_name": {
-      "defaultValue": "dxcu16csatest01431"
+      "value": "dxcu16csatest01431"
     },
     "networkSecurityGroups_CSA_nsg_name": {
-      "defaultValue": "dxcu16csatest01-nsg"
+      "value": "dxcu16csatest01-nsg"
     },
     "publicIPAddresses_CSA_ip_name": {
-      "defaultValue": "dxcu16csatest01-ip"
+      "value": "dxcu16csatest01-ip"
     },
     "virtualNetworks_CSA_name": {
-      "defaultValue": "dxcCSAtest"
+      "value": "dxcCSAtest"
     },
     "storageAccounts_CSAD_name": {
-      "defaultValue": "dxccsarg01disks848"
+      "value": "dxccsarg01disks848"
     },
     "storageAccounts_CSAO_name": {
-      "defaultValue": "dxccsatestsa01"
+      "value": "dxccsatestsa01"
     }
   }
 }
