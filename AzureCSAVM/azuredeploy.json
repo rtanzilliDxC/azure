@@ -93,7 +93,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": true,
-            "storageUri": "https://mypersonalrsdiag285.blob.core.windows.net/"
+            "storageUri": "[concat('https', '://', parameters('storageAccounts_CSAO_name'), '.blob.core.windows.net')]"
           }
         }
       },
@@ -113,8 +113,8 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "10.1.0.4",
-              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAddress": "10.1.0.30",
+              "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_CSA_ip_name'))]"
               },

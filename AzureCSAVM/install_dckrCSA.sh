@@ -23,6 +23,9 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 apt-get update
 #Install Docker
 apt-get install docker-ce -y
+systemctl start docker
+systemctl enable docker
+usermod -g docker csauser
 # Install correct version of docker-compose
 curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
