@@ -30,7 +30,7 @@ usermod -g docker csauser
 curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 # Save current IP Address and Hostname in a variable
-vmipaddr=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1') | grep -v '172.*'
+vmipaddr=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | grep -v '172.*')
 vmname=$(hostname)
 mkdir csa
 cd csa
