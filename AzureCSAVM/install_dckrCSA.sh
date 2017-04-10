@@ -25,7 +25,12 @@ apt-get update
 apt-get install docker-ce -y
 systemctl start docker
 systemctl enable docker
-usermod -g docker csauser
+if getent passwd csauser > /dev/null 2>&1; then
+  useradd -c "CSA User" -m -d /home/csauser -s /bin/bash csauser
+	echo csauser:Xcs4us3r | chpasswd
+else
+	usermod -g docker csauser
+fi
 # Install correct version of docker-compose
 curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
